@@ -18,13 +18,14 @@ RUN apt-get update \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
     libmcrypt-dev \
-    libpng-dev
+    libpng-dev \
+    libxml++2.6-dev
 
 #Configura zip
 #RUN docker-php-ext-configure zip --with-zlib-dir
 
 #Instala extensión zip mbstring, pdo, pdo_mysql y configura mbstring, gd
-RUN docker-php-ext-install zip mbstring pdo pdo_mysql bcmath
+RUN docker-php-ext-install zip mbstring pdo pdo_mysql bcmath soap
 # && docker-php-ext-configure mbstring
 
 #Instala y Configura GD
@@ -33,7 +34,6 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
 
 #Instalar composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php -r "if (hash_file('sha384', 'composer-setup.php') === 'a5c698ffe4b8e849a443b120cd5ba38043260d5c4023dbf93e1558871f1f07f58274fc6f4c93bcfd858c6bd0775cd8d1') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
     && php composer-setup.php \
     && php -r "unlink('composer-setup.php');" \
     && mv composer.phar /usr/local/bin/composer
