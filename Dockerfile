@@ -13,6 +13,8 @@ RUN useradd -d /project userapp -s /bin/bash
 RUN apt-get update \
     && apt-get install -y \
     zip \
+    nano \
+    locate \
     zlib1g-dev \
     libzip-dev \
     libfreetype6-dev \
@@ -37,6 +39,9 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php \
     && php -r "unlink('composer-setup.php');" \
     && mv composer.phar /usr/local/bin/composer
+
+#Aumenta memoria PHP
+RUN echo 'memory_limit = 2G' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
 
 #Instalar git
 RUN apt-get install -y git
